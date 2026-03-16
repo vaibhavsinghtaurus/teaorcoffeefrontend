@@ -1,0 +1,109 @@
+/* =============================================
+   Central Colour Tokens
+   All colours in the app are defined here.
+   Components use these variables — never raw hex values.
+   ============================================= */
+
+:root {
+  /* Brand */
+  --color-brand: #667eea;
+  --color-brand-end: #764ba2;
+  --color-brand-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  /* Page / structural backgrounds */
+  --color-bg-page: #f0f2f8;
+  --color-bg-card: #ffffff;
+  --color-bg-input: #ffffff;
+  --color-bg-input-disabled: #f5f5f5;
+  --color-bg-select-disabled: #f5f5f5;
+
+  /* Message / surface variants */
+  --color-bg-message: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  --color-bg-breakdown: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  --color-bg-breakdown-item: #ffffff;
+  --color-bg-myvote: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  --color-bg-order-summary: rgba(255, 255, 255, 0.2);
+
+  /* Text */
+  --color-text-primary: #333333;
+  --color-text-secondary: #666666;
+  --color-text-muted: #999999;
+  --color-text-on-brand: #ffffff;
+
+  /* Borders */
+  --color-border: #e0e0e0;
+  --color-border-on-brand: rgba(255, 255, 255, 0.3);
+  --color-border-on-brand-focus: #ffffff;
+
+  /* Tea & coffee accents */
+  --color-tea-accent: #8fd3f4;
+  --color-tea-badge: linear-gradient(135deg, #a8edea 0%, #8fd3f4 100%);
+  --color-tea-badge-text: #333333;
+  --color-coffee-accent: #fa709a;
+  --color-coffee-badge: linear-gradient(135deg, #fbc2eb 0%, #fa709a 100%);
+  --color-coffee-badge-text: #ffffff;
+
+  /* Scrollbar */
+  --color-scrollbar-track: #f1f1f1;
+  --color-scrollbar-thumb: #667eea;
+
+  /* Error state */
+  --color-error-bg: #ffeeee;
+  --color-error-border: #ffcccc;
+  --color-error-text: #cc3333;
+
+  /* Shadows */
+  --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.15);
+  --shadow-button: 0 4px 15px rgba(0, 0, 0, 0.2);
+  --shadow-result-card: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ---- Dark theme overrides ---- */
+[data-theme="dark"] {
+  /* Page / structural backgrounds */
+  --color-bg-page: #12121f;
+  --color-bg-card: #1c1c2e;
+  --color-bg-input: #252538;
+  --color-bg-input-disabled: #1a1a2a;
+  --color-bg-select-disabled: #1a1a2a;
+
+  /* Message / surface variants */
+  --color-bg-message: linear-gradient(135deg, #252538 0%, #2a2a40 100%);
+  --color-bg-breakdown: linear-gradient(135deg, #2a1f45 0%, #1a2e4a 100%);
+  --color-bg-breakdown-item: #252538;
+  --color-bg-myvote: linear-gradient(135deg, #3a2a1a 0%, #4a2a1a 100%);
+  --color-bg-order-summary: rgba(0, 0, 0, 0.25);
+
+  /* Text */
+  --color-text-primary: #e0e0f0;
+  --color-text-secondary: #9090aa;
+  --color-text-muted: #60607a;
+  --color-text-on-brand: #ffffff;
+
+  /* Borders */
+  --color-border: #2e3050;
+  --color-border-on-brand: rgba(255, 255, 255, 0.2);
+  --color-border-on-brand-focus: rgba(255, 255, 255, 0.8);
+
+  /* Tea & coffee accents */
+  --color-tea-accent: #6bbfe0;
+  --color-tea-badge: linear-gradient(135deg, #1a4845 0%, #1a3858 100%);
+  --color-tea-badge-text: #a8edea;
+  --color-coffee-accent: #d05080;
+  --color-coffee-badge: linear-gradient(135deg, #451830 0%, #55182a 100%);
+  --color-coffee-badge-text: #fbc2eb;
+
+  /* Scrollbar */
+  --color-scrollbar-track: #1c1c2e;
+  --color-scrollbar-thumb: #667eea;
+
+  /* Error state */
+  --color-error-bg: #35151a;
+  --color-error-border: #60252a;
+  --color-error-text: #ff8080;
+
+  /* Shadows */
+  --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --shadow-button: 0 4px 15px rgba(0, 0, 0, 0.5);
+  --shadow-result-card: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
