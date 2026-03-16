@@ -9,6 +9,7 @@ const API_URL = "https://teaorcoffee.onrender.com";
 
 export interface AuthContextValue {
   userName: () => string | null;
+  getToken: () => string | null;
   isAuthenticated: () => boolean;
   login: (name: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
@@ -20,8 +21,11 @@ export const AuthProvider: ParentComponent = (props) => {
   const [userName, setUserName] = createSignal<string | null>(
     localStorage.getItem("userName"),
   );
+  const [token, setToken] = createSignal<string | null>(
+    localStorage.getItem("authToken"),
+  );
 
-  const isAuthenticated = () => userName() !== null;
+  const isAuthenticated = () => userName() !== null && token() !== null;
 
   const login = async (name: string) => {
     try {
@@ -36,9 +40,11 @@ export const AuthProvider: ParentComponent = (props) => {
         return { success: false, error: error.detail || "Login failed" };
       }
 
-      // Store username in localStorage and state
+      const data = await response.json();
       localStorage.setItem("userName", name);
+      localStorage.setItem("authToken", data.token);
       setUserName(name);
+      setToken(data.token);
       return { success: true };
     } catch (err) {
       return { success: false, error: "Network error. Please try again." };
@@ -47,11 +53,14 @@ export const AuthProvider: ParentComponent = (props) => {
 
   const logout = () => {
     localStorage.removeItem("userName");
+    localStorage.removeItem("authToken");
     setUserName(null);
+    setToken(null);
   };
 
   const value: AuthContextValue = {
     userName,
+    getToken: token,
     isAuthenticated,
     login,
     logout,

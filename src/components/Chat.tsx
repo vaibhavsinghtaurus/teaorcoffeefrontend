@@ -38,7 +38,7 @@ const Chat: Component = () => {
   });
 
   const connectChatWebSocket = () => {
-    chatSocket = new WebSocket(`${WS_URL}/ws/chat`);
+    chatSocket = new WebSocket(`${WS_URL}/ws/chat?token=${auth.getToken()}`);
 
     chatSocket.onmessage = (event) => {
       const msg = JSON.parse(event.data);

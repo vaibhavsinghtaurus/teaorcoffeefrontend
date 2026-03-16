@@ -33,6 +33,8 @@ const TeaCoffeeVote: Component = () => {
 
   let voteSocket: WebSocket | null = null;
 
+  const authHeader = () => ({ Authorization: `Bearer ${auth.getToken()}` });
+
   onMount(() => {
     fetchVotes();
     fetchMyVote();
@@ -49,7 +51,9 @@ const TeaCoffeeVote: Component = () => {
   // -------- Votes --------
   const fetchVotes = async () => {
     try {
-      const res = await fetch(`${API_URL}/votes`);
+      const res = await fetch(`${API_URL}/votes`, {
+        headers: authHeader(),
+      });
 
       if (res.status === 401) {
         auth.logout();
@@ -60,14 +64,15 @@ const TeaCoffeeVote: Component = () => {
       setVotes(data);
       setConnectionError(false);
     } catch (err) {
-      // Hide IP-related errors
       setConnectionError(true);
     }
   };
 
   const fetchMyVote = async () => {
     try {
-      const res = await fetch(`${API_URL}/vote/me`);
+      const res = await fetch(`${API_URL}/vote/me`, {
+        headers: authHeader(),
+      });
 
       if (res.status === 401) {
         auth.logout();
@@ -80,14 +85,14 @@ const TeaCoffeeVote: Component = () => {
       setMyVote(data);
       setHasVoted(true);
     } catch {
-      // Hide IP-related errors - user has not voted yet
+      // user has not voted yet
     }
   };
 
   const fetchOrdersBreakdown = async () => {
     try {
       const res = await fetch(`${API_URL}/orders/breakdown`, {
-        credentials: "include",
+        headers: authHeader(),
       });
 
       if (res.status === 401) {
@@ -100,12 +105,12 @@ const TeaCoffeeVote: Component = () => {
       const data = await res.json();
       setOrdersBreakdown(data);
     } catch (err) {
-      // Hide IP-related errors
+      // ignore
     }
   };
 
   const connectVoteWebSocket = () => {
-    voteSocket = new WebSocket(`${WS_URL}/ws/votes`);
+    voteSocket = new WebSocket(`${WS_URL}/ws/votes?token=${auth.getToken()}`);
 
     voteSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -115,7 +120,6 @@ const TeaCoffeeVote: Component = () => {
     };
 
     voteSocket.onerror = () => {
-      // Hide IP-related errors
       setConnectionError(true);
     };
   };
@@ -128,7 +132,6 @@ const TeaCoffeeVote: Component = () => {
     const orderAmount = amount();
     const maxAllowed = getMaxAmount();
 
-    // Validation rules
     if (orderAmount === 0) {
       alert("At least one drink must be ordered");
       return;
@@ -144,7 +147,7 @@ const TeaCoffeeVote: Component = () => {
     try {
       const res = await fetch(`${API_URL}/vote`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeader() },
         body: JSON.stringify({
           tea: drinkType() === "tea" ? orderAmount : 0,
           coffee: drinkType() === "coffee" ? orderAmount : 0,
@@ -171,7 +174,6 @@ const TeaCoffeeVote: Component = () => {
 
       setTimeout(() => setShowThankYou(false), 3000);
     } catch (err) {
-      // Hide IP-related errors
       setConnectionError(true);
     }
   };
@@ -208,7 +210,6 @@ const TeaCoffeeVote: Component = () => {
                   onInput={(e) => {
                     const type = e.currentTarget.value as "tea" | "coffee";
                     setDrinkType(type);
-                    // Reset amount if it exceeds new max
                     if (type === "coffee" && amount() > 1) {
                       setAmount(1);
                     }
