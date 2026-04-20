@@ -33,8 +33,6 @@ const TeaCoffeeVote: Component = () => {
 
   let voteSocket: WebSocket | null = null;
 
-  const authHeader = () => ({ Authorization: `Bearer ${auth.getToken()}` });
-
   onMount(() => {
     fetchVotes();
     fetchMyVote();
@@ -51,15 +49,8 @@ const TeaCoffeeVote: Component = () => {
   // -------- Votes --------
   const fetchVotes = async () => {
     try {
-      const res = await fetch(`${API_URL}/votes`, {
-        headers: authHeader(),
-      });
-
-      if (res.status === 401) {
-        auth.logout();
-        return;
-      }
-
+      const res = await auth.apiFetch(`${API_URL}/votes`);
+      if (!res) return;
       const data = await res.json();
       setVotes(data);
       setConnectionError(false);
@@ -70,17 +61,8 @@ const TeaCoffeeVote: Component = () => {
 
   const fetchMyVote = async () => {
     try {
-      const res = await fetch(`${API_URL}/vote/me`, {
-        headers: authHeader(),
-      });
-
-      if (res.status === 401) {
-        auth.logout();
-        return;
-      }
-
-      if (!res.ok) return;
-
+      const res = await auth.apiFetch(`${API_URL}/vote/me`);
+      if (!res || !res.ok) return;
       const data = await res.json();
       setMyVote(data);
       setHasVoted(true);
@@ -91,20 +73,11 @@ const TeaCoffeeVote: Component = () => {
 
   const fetchOrdersBreakdown = async () => {
     try {
-      const res = await fetch(`${API_URL}/orders/breakdown`, {
-        headers: authHeader(),
-      });
-
-      if (res.status === 401) {
-        auth.logout();
-        return;
-      }
-
-      if (!res.ok) return;
-
+      const res = await auth.apiFetch(`${API_URL}/orders/breakdown`);
+      if (!res || !res.ok) return;
       const data = await res.json();
       setOrdersBreakdown(data);
-    } catch (err) {
+    } catch {
       // ignore
     }
   };
@@ -145,19 +118,16 @@ const TeaCoffeeVote: Component = () => {
     }
 
     try {
-      const res = await fetch(`${API_URL}/vote`, {
+      const res = await auth.apiFetch(`${API_URL}/vote`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", ...authHeader() },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           tea: drinkType() === "tea" ? orderAmount : 0,
           coffee: drinkType() === "coffee" ? orderAmount : 0,
         }),
       });
 
-      if (res.status === 401) {
-        auth.logout();
-        return;
-      }
+      if (!res) return;
 
       if (!res.ok) {
         const errorData = await res.json();
