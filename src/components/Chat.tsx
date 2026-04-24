@@ -7,7 +7,7 @@ import {
 } from "solid-js";
 import { useAuth } from "../contexts/AuthContext";
 
-const WS_URL = "wss://teaorcoffee.onrender.com";
+const WS_URL = "wss://teaorcoffee.vercel.app";
 
 const Chat: Component = () => {
   const auth = useAuth();
