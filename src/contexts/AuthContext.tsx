@@ -5,7 +5,7 @@ import {
   type ParentComponent,
 } from "solid-js";
 
-const API_URL = "https://teaorcoffee.onrender.com";
+const API_URL = "https://teaorcoffee.vercel.app";
 
 export interface LoginResult {
   success: boolean;

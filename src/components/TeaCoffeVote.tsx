@@ -4,8 +4,8 @@ import "./style/teaorcoffeevotes.css";
 import Chat from "./Chat";
 import { useAuth } from "../contexts/AuthContext";
 
-const API_URL = "https://teaorcoffee.onrender.com";
-const WS_URL = "wss://teaorcoffee.onrender.com";
+const API_URL = "https://teaorcoffee.vercel.app";
+const WS_URL = "wss://teaorcoffee.vercel.app";
 
 interface OrderDetail {
   name: string;
